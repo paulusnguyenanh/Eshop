@@ -22,8 +22,20 @@ class Course(ItemBase):
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True)# de thoa man nhat quan du lieu
 
+    def __str__(self):
+        return self.subject
+
 class Lesson(ItemBase):
     class Meta:
         unique_together = ('subject','course') # trong 1 course ko đc trùng subject
     content = models.TextField()
-    course = models.ForeignKey(Course,on_delete=models.CASCADE)
+    course = models.ForeignKey(Course,related_name="lessons",on_delete=models.CASCADE)
+    tags = models.ManyToManyField('Tag',blank= True,null= True)# thì những cái đã có trc mà chưa thiết lập cho cái này thì nó sẽ là null hoặc none
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique= True)
+
+
+    def __str__(self):
+        return self.name
