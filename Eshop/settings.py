@@ -86,7 +86,7 @@ DATABASES = {
         'PORT' : '3306',
     }
 }
-AUTH_USER_MODEL = 'courses.User'
+AUTH_USER_MODEL = 'courses.User'# nó sẽ sử dụng lớp User thay cho cái lớp User của nó vì ta thêm 1 số trường vào cái User ta tạo ra
 
 
 # Password validation
@@ -126,6 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = '%s/courses/static/' % BASE_DIR
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
