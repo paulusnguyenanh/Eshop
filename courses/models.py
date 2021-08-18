@@ -6,6 +6,8 @@ class User(AbstractUser):# nó giống như cái lớp đc tạo từ lớp tr�
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=100,null=False,unique=True)
+    def __str__(self):
+        return self.name
 
 class ItemBase(models.Model):
     class Meta:
@@ -15,6 +17,8 @@ class ItemBase(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
+    def __str__(self):
+        return self.subject
 
 class Course(ItemBase):
     class Meta:
@@ -22,8 +26,6 @@ class Course(ItemBase):
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True)# de thoa man nhat quan du lieu
 
-    def __str__(self):
-        return self.subject
 
 class Lesson(ItemBase):
     class Meta:
@@ -31,9 +33,6 @@ class Lesson(ItemBase):
     content = models.TextField()
     course = models.ForeignKey(Course,related_name="lessons",on_delete=models.CASCADE)
     tags = models.ManyToManyField('Tag',blank= True,null= True)# thì những cái đã có trc mà chưa thiết lập cho cái này thì nó sẽ là null hoặc none
-
-    def __str__(self):
-        return self.subject
 
 
 class Tag(models.Model):
