@@ -12,6 +12,11 @@ class LessonForm(forms.ModelForm):
         model = Lesson
         fields = "__all__"
 
+
+class LessonTagInline(admin.TabularInline):
+    model = Lesson.tags.through# through de dinh nghia model trung gian
+
+
 class Lesson_Admin(admin.ModelAdmin):
 
     class Media:
@@ -22,6 +27,7 @@ class Lesson_Admin(admin.ModelAdmin):
     search_fields = ["subject","create_date","course__subject"]
     list_filter = ["subject","course__subject"]
     readonly_fields = ["avatar"]
+    inlines = (LessonTagInline, )
 
     def avatar(self,lesson):# thêm ảnh vào trong và chỉ có thể xem
         return mark_safe("<img src='/static/{img_url}' alt='{alt}' width='120px' />".format(img_url=lesson.image.name,alt=lesson.subject))
@@ -29,9 +35,14 @@ class Lesson_Admin(admin.ModelAdmin):
 
 
 
+class LessonInlineAdmin(admin.StackedInline): #inline la ta nhung mot cai form khac vao
+    model = Lesson #ke thua model
+    pk_name = 'course'
 
+class CourseAdmin(admin.ModelAdmin):
+    inlines = (LessonInlineAdmin,) #no phai la tupe
 
 admin.site.register(User)
-admin.site.register(Course)
+admin.site.register(Course,CourseAdmin)
 admin.site.register(Category)
 admin.site.register(Lesson,Lesson_Admin)
