@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from ckeditor.fields import RichTextField
 
 class User(AbstractUser):# nó giống như cái lớp đc tạo từ lớp trừu tượng
     avatar = models.ImageField(upload_to='uploads/%Y/%m')
@@ -30,7 +31,7 @@ class Course(ItemBase):
 class Lesson(ItemBase):
     class Meta:
         unique_together = ('subject','course') # trong 1 course ko đc trùng subject
-    content = models.TextField()
+    content = RichTextField()
     course = models.ForeignKey(Course,related_name="lessons",on_delete=models.CASCADE)
     tags = models.ManyToManyField('Tag',blank= True,null= True)# thì những cái đã có trc mà chưa thiết lập cho cái này thì nó sẽ là null hoặc none
 
